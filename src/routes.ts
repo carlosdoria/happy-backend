@@ -1,4 +1,5 @@
 import Router from 'express';
+// biblioteca utilizada para fazer o upload de imagens
 import multer from 'multer'
 
 import uploadsConfig from './config/upload'
