@@ -2,14 +2,18 @@ import { Request, Response} from 'express'
 // 'getRepository' possui a regra de negócio para fazer as alterações no banco de dados
 import { getRepository } from 'typeorm';
 import Orphanages from '../models/Orphanage';
+import OphanageViews from '../views/ophanageViews'
 
 export default {
   async index(req: Request, res: Response) {
     const ophanagesRepository = getRepository(Orphanages);
 
-    const listOrphanages = await ophanagesRepository.find()
+    const listOrphanages = await ophanagesRepository.find({
+      //responsável por mostrar as imagens no response
+      relations: ['images']
+    })
 
-    return res.json(listOrphanages)
+    return res.json(OphanageViews.renderMany(listOrphanages))
   },
 
 
@@ -19,9 +23,11 @@ export default {
 
     const ophanagesRepository = getRepository(Orphanages);
 
-    const findOrphanage = await ophanagesRepository.findOneOrFail(id)
+    const findOrphanage = await ophanagesRepository.findOneOrFail(id, {
+      relations: ['images']
+    })
 
-    return res.json(findOrphanage)
+    return res.json(OphanageViews.render(findOrphanage))
   },
 
 
