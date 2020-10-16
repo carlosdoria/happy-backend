@@ -1,6 +1,8 @@
 import { Request, Response} from 'express'
 // 'getRepository' possui a regra de negócio para fazer as alterações no banco de dados
 import { getRepository } from 'typeorm';
+import * as Yup from 'yup'
+
 import Orphanages from '../models/Orphanage';
 import OphanageViews from '../views/ophanageViews'
 
@@ -51,7 +53,7 @@ export default {
       return { path: image.filename }
     });
 
-    const newOphanage = ophanagesRepository.create({
+    const data = {
       name,
       latitude,
       longitude,
@@ -60,7 +62,29 @@ export default {
       opening_hours,
       open_on_weekends,
       images
-    });
+    }
+
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      latitude: Yup.number().required(),
+      longitude: Yup.number().required(),
+      about: Yup.string().required().max(300),
+      instructions: Yup.string().required(),
+      opening_hours: Yup.string().required(),
+      open_on_weekends: Yup.boolean().required(),
+      images: Yup.array(
+        Yup.object().shape({
+          path: Yup.string().required(),
+        })
+      )
+    })
+
+    await schema.validate(data, {
+      // permite que analise todos os campos e informe todos os errors
+      abortEarly: false,
+    })
+
+    const newOphanage = ophanagesRepository.create(data);
 
     await ophanagesRepository.save(newOphanage)
 
