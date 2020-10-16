@@ -7,9 +7,21 @@ export default {
   async index(req: Request, res: Response) {
     const ophanagesRepository = getRepository(Orphanages);
 
-    const findOrphanages = await ophanagesRepository.find()
+    const listOrphanages = await ophanagesRepository.find()
 
-    return res.json(findOrphanages)
+    return res.json(listOrphanages)
+  },
+
+
+  async show(req: Request, res: Response) {
+
+    const { id } = req.params;
+
+    const ophanagesRepository = getRepository(Orphanages);
+
+    const findOrphanage = await ophanagesRepository.findOneOrFail(id)
+
+    return res.json(findOrphanage)
   },
 
 
