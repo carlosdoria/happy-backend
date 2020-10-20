@@ -1,5 +1,7 @@
-import express from 'express';
 import path from 'path'
+// import 'dotenv/config'
+import 'dotenv/config'
+import express from 'express';
 import cors from 'cors'
 import 'express-async-errors'
 
@@ -20,4 +22,8 @@ app.use('/uploads', express.static(path.join(__dirname, '..', '/uploads')))
 
 app.use(errorHandler)
 
-app.listen(3333);
+const PORT = process.env.PORT || 3333
+
+app.listen(PORT, () => {
+  console.log(`Running on port: ${PORT}`)
+});
