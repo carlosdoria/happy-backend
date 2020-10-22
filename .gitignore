@@ -2,6 +2,7 @@ node_modules
 yarn.locking
 
 .env
+.env.development
 dist
 
 upload/*

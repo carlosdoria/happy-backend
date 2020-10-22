@@ -1,3 +1,4 @@
+import './config/env'
 import path from 'path'
 // import 'dotenv/config'
 import 'dotenv/config'
@@ -22,7 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', '/uploads')))
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 3333
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Running on port: ${PORT}`)
